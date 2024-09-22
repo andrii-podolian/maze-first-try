@@ -13,7 +13,7 @@ export async function createBook({
   authorName: string
   coverImage?: string
 }) {
-  let author = await db
+  const author = await db
     .select()
     .from(authors)
     .where(eq(authors.name, authorName))
@@ -48,7 +48,7 @@ export async function updateBook({
   authorName: string
   coverImage?: string
 }) {
-  let author = await db
+  const author = await db
     .select()
     .from(authors)
     .where(eq(authors.name, authorName))

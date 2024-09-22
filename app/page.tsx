@@ -47,9 +47,18 @@ export default function Page() {
     setLoading(true)
     try {
       const res = await fetch(`/api/books?page=${page}`)
-      const newBooks = await res.json()
-      setBooks((prevBooks) => [...prevBooks, ...newBooks])
-      setPage((prevPage) => prevPage + 1)
+      const data = await res.json()
+      const newBooks = Array.isArray(data) ? data : []
+      if (newBooks.length > 0) {
+        setBooks((prevBooks) => [...prevBooks, ...newBooks])
+        setPage((prevPage) => prevPage + 1)
+      } else {
+        toast({
+          title: 'No more books',
+          description: 'You have reached the end of the book list.',
+          variant: 'default',
+        })
+      }
     } catch (error) {
       console.error('Error loading books:', error)
       toast({
@@ -81,7 +90,10 @@ export default function Page() {
 
     try {
       const newBook = await createBook({ title, authorName, coverImage })
-      setBooks((prevBooks) => [newBook, ...prevBooks])
+      setBooks((prevBooks) => [
+        { ...newBook, coverImage: newBook.coverImage || '' },
+        ...prevBooks,
+      ])
       form.reset()
       toast({
         title: 'Success',
@@ -121,11 +133,17 @@ export default function Page() {
         id: editingBook.id,
         title,
         authorName,
-        coverImage,
+        coverImage: coverImage || '',
       })
       setBooks((prevBooks) =>
         prevBooks.map((book) =>
-          book.id === updatedBook.id ? updatedBook : book
+          book.id === updatedBook.id
+            ? {
+                ...book,
+                ...updatedBook,
+                coverImage: updatedBook.coverImage || '',
+              }
+            : book
         )
       )
       setEditingBook(null)
