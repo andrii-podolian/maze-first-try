@@ -9,11 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.1",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
     "@vercel/postgres": "^0.10.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "drizzle-orm": "^0.33.0",
+    "framer-motion": "^11.5.6",
+    "lucide-react": "^0.445.0",
     "next": "15.0.0-rc.0",
     "react": "19.0.0-rc-e4953922-20240919",
-    "react-dom": "19.0.0-rc-e4953922-20240919"
+    "react-dom": "19.0.0-rc-e4953922-20240919",
+    "react-intersection-observer": "^9.13.1",
+    "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^20",
