@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db/drizzle'
 import { books, authors } from '@/lib/db/schema'
-import { eq } from 'drizzle-orm'
+import { eq, desc } from 'drizzle-orm'
 
 export async function createBook({
   title,
@@ -75,4 +75,28 @@ export async function updateBook({
 
 export async function deleteBook(id: number) {
   await db.delete(books).where(eq(books.id, id))
+}
+
+export async function getBooks(page: number, limit: number = 10) {
+  const offset = (page - 1) * limit
+  const fetchedBooks = await db
+    .select({
+      id: books.id,
+      title: books.title,
+      coverImage: books.coverImage,
+      authorId: books.authorId,
+      authorName: authors.name,
+    })
+    .from(books)
+    .leftJoin(authors, eq(books.authorId, authors.id))
+    .orderBy(desc(books.id))
+    .limit(limit)
+    .offset(offset)
+
+  return fetchedBooks.map((book) => ({
+    id: book.id,
+    title: book.title,
+    coverImage: book.coverImage,
+    author: { name: book.authorName },
+  }))
 }

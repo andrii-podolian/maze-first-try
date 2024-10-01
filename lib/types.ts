@@ -2,5 +2,6 @@ export interface BookType {
   id: number
   title: string
   author: { name: string }
-  coverImage: string
+  coverImage: string | null
+  authorId: number
 }

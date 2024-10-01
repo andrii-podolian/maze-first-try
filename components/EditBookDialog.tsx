@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
@@ -11,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
 import { updateBook } from '@/lib/actions'
-import { BookType } from './types'
+import { BookType } from '@/lib/types'
 import { Edit } from 'lucide-react'
 
 interface EditBookDialogProps {
@@ -23,13 +25,11 @@ export default function EditBookDialog({
   book,
   setBooks,
 }: EditBookDialogProps) {
-  const [editingBook, setEditingBook] = useState<BookType | null>(null)
+  const [open, setOpen] = useState(false)
   const { toast } = useToast()
 
   const handleUpdateBook = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!editingBook) return
-
     const form = event.currentTarget
     const formData = new FormData(form)
     const title = formData.get('title') as string
@@ -47,23 +47,15 @@ export default function EditBookDialog({
 
     try {
       const updatedBook = await updateBook({
-        id: editingBook.id,
+        id: book.id,
         title,
         authorName,
-        coverImage: coverImage || '',
+        coverImage,
       })
       setBooks((prevBooks) =>
-        prevBooks.map((book) =>
-          book.id === updatedBook.id
-            ? {
-                ...book,
-                ...updatedBook,
-                coverImage: updatedBook.coverImage || '',
-              }
-            : book
-        )
+        prevBooks.map((b) => (b.id === updatedBook.id ? updatedBook : b))
       )
-      setEditingBook(null)
+      setOpen(false)
       toast({
         title: 'Success',
         description: 'Book updated successfully.',
@@ -79,13 +71,9 @@ export default function EditBookDialog({
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant='outline'
-          size='sm'
-          onClick={() => setEditingBook(book)}
-        >
+        <Button variant='outline' size='sm'>
           <Edit className='w-4 h-4 mr-2' />
           Edit
         </Button>
@@ -100,7 +88,7 @@ export default function EditBookDialog({
             <Input
               id='edit-title'
               name='title'
-              defaultValue={editingBook?.title}
+              defaultValue={book.title}
               required
             />
           </div>
@@ -109,7 +97,7 @@ export default function EditBookDialog({
             <Input
               id='edit-author'
               name='author'
-              defaultValue={editingBook?.author?.name}
+              defaultValue={book.author?.name}
               required
             />
           </div>
@@ -118,7 +106,7 @@ export default function EditBookDialog({
             <Input
               id='edit-coverImage'
               name='coverImage'
-              defaultValue={editingBook?.coverImage}
+              defaultValue={book.coverImage || ''}
             />
           </div>
           <Button type='submit'>Update Book</Button>

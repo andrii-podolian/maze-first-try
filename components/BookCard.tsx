@@ -1,9 +1,11 @@
+'use client'
+
 import Image from 'next/image'
 import { Edit, Trash2 } from 'lucide-react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import EditBookDialog from './EditBookDialog'
-import { BookType } from './types'
+import { BookType } from '@/lib/types'
 import { deleteBook } from '@/lib/actions'
 import { useToast } from '@/hooks/use-toast'
 
@@ -15,10 +17,10 @@ interface BookCardProps {
 export default function BookCard({ book, setBooks }: BookCardProps) {
   const { toast } = useToast()
 
-  const handleDeleteBook = async (id: number) => {
+  const handleDeleteBook = async () => {
     try {
-      await deleteBook(id)
-      setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id))
+      await deleteBook(book.id)
+      setBooks((prevBooks) => prevBooks.filter((b) => b.id !== book.id))
       toast({
         title: 'Success',
         description: 'Book deleted successfully.',
@@ -48,11 +50,7 @@ export default function BookCard({ book, setBooks }: BookCardProps) {
       </CardContent>
       <CardFooter className='flex justify-between'>
         <EditBookDialog book={book} setBooks={setBooks} />
-        <Button
-          variant='destructive'
-          size='sm'
-          onClick={() => handleDeleteBook(book.id)}
-        >
+        <Button variant='destructive' size='sm' onClick={handleDeleteBook}>
           <Trash2 className='w-4 h-4 mr-2' />
           Delete
         </Button>

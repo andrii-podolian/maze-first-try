@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -10,13 +13,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
 import { createBook } from '@/lib/actions'
-import { BookType } from './types'
 
-interface AddBookDialogProps {
-  setBooks: React.Dispatch<React.SetStateAction<BookType[]>>
-}
-
-export default function AddBookDialog({ setBooks }: AddBookDialogProps) {
+export default function AddBookDialog() {
+  const [open, setOpen] = useState(false)
   const { toast } = useToast()
 
   const handleCreateBook = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,12 +36,9 @@ export default function AddBookDialog({ setBooks }: AddBookDialogProps) {
     }
 
     try {
-      const newBook = await createBook({ title, authorName, coverImage })
-      setBooks((prevBooks) => [
-        { ...newBook, coverImage: newBook.coverImage || '' },
-        ...prevBooks,
-      ])
+      await createBook({ title, authorName, coverImage })
       form.reset()
+      setOpen(false)
       toast({
         title: 'Success',
         description: 'Book created successfully.',
@@ -58,7 +54,7 @@ export default function AddBookDialog({ setBooks }: AddBookDialogProps) {
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className='mb-4'>Add New Book</Button>
       </DialogTrigger>
