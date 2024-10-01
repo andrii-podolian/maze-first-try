@@ -3,6 +3,7 @@
 import { db } from '@/lib/db/drizzle'
 import { books, authors } from '@/lib/db/schema'
 import { eq, desc } from 'drizzle-orm'
+import { BookType } from '@/lib/types'
 
 export async function createBook({
   title,
@@ -12,7 +13,7 @@ export async function createBook({
   title: string
   authorName: string
   coverImage?: string
-}) {
+}): Promise<BookType> {
   const author = await db
     .select()
     .from(authors)
@@ -47,7 +48,7 @@ export async function updateBook({
   title: string
   authorName: string
   coverImage?: string
-}) {
+}): Promise<BookType> {
   const author = await db
     .select()
     .from(authors)
@@ -73,11 +74,14 @@ export async function updateBook({
   return { ...updatedBook[0], author: { name: authorName } }
 }
 
-export async function deleteBook(id: number) {
+export async function deleteBook(id: number): Promise<void> {
   await db.delete(books).where(eq(books.id, id))
 }
 
-export async function getBooks(page: number, limit: number = 10) {
+export async function getBooks(
+  page: number,
+  limit: number = 10
+): Promise<BookType[]> {
   const offset = (page - 1) * limit
   const fetchedBooks = await db
     .select({

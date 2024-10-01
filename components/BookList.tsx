@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import BookCard from '@/components/BookCard'
+import BookCard from './BookCard'
 import { BookType } from '@/lib/types'
 import { getBooks } from '@/lib/actions'
 import { useToast } from '@/hooks/use-toast'
