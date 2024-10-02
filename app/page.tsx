@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import BookList from '@/components/BookList'
 import Header from '@/components/Header'
 import { getBooks } from '@/lib/actions'
+import { BookListSkeleton } from '@/components/BookSkeleton'
 
 export const revalidate = 3600 // Revalidate every hour
 
@@ -14,7 +15,7 @@ export default async function Page() {
       <main>
         <div className='max-w-7xl mx-auto py-6 sm:px-6 lg:px-8'>
           <div className='px-4 py-6 sm:px-0'>
-            <Suspense fallback={<div>Loading books...</div>}>
+            <Suspense fallback={<BookListSkeleton />}>
               <BookList initialBooks={initialBooks} />
             </Suspense>
           </div>

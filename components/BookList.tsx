@@ -15,7 +15,7 @@ interface BookListProps {
 
 export default function BookList({ initialBooks }: BookListProps) {
   const [books, setBooks] = useState<BookType[]>(initialBooks)
-  const [page, setPage] = useState(2) // Start from page 2 as we already have page 1
+  const [page, setPage] = useState(2)
   const [loading, setLoading] = useState(false)
   const { toast } = useToast()
   const { ref, inView } = useInView()
@@ -86,7 +86,7 @@ export default function BookList({ initialBooks }: BookListProps) {
           </motion.div>
         ))}
       </div>
-      {loading && <p className='text-center mt-4'>Loading more books...</p>}
+      {/* {loading && <p className='text-center mt-4'>Loading more books...</p>} */}
       <div ref={ref} style={{ height: '20px' }} />
     </>
   )
