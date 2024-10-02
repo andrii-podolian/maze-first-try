@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { Edit, Trash2 } from 'lucide-react'
+import { Edit, Trash2, Book } from 'lucide-react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import EditBookDialog from './EditBookDialog'
@@ -15,7 +15,7 @@ interface BookCardProps {
   onBookRemoved: (id: number) => void
 }
 
-export default function BookCard({
+export default function BookCardComponent({
   book,
   onBookUpdated,
   onBookRemoved,
@@ -42,18 +42,28 @@ export default function BookCard({
 
   return (
     <Card>
-      <CardContent>
-        <Image
-          src={book.coverImage || '/placeholder.svg'}
-          alt={book.title}
-          width={300}
-          height={192}
-          className='w-full h-48 object-cover mb-4'
-        />
-        <h2 className='text-lg font-semibold'>{book.title}</h2>
-        <p className='text-sm text-gray-500'>{book.author?.name}</p>
+      <CardContent className='p-4'>
+        <div className='relative w-full h-48 mb-4'>
+          {book.coverImage ? (
+            <Image
+              src={book.coverImage}
+              alt={book.title}
+              fill
+              style={{ objectFit: 'cover' }}
+              className='rounded-md'
+            />
+          ) : (
+            <div className='w-full h-full bg-gray-200 rounded-md flex items-center justify-center'>
+              <Book className='w-16 h-16 text-gray-400' />
+            </div>
+          )}
+        </div>
+        <h2 className='text-lg font-semibold line-clamp-1'>{book.title}</h2>
+        <p className='text-sm text-gray-500 line-clamp-1'>
+          {book.author?.name}
+        </p>
       </CardContent>
-      <CardFooter className='flex justify-between'>
+      <CardFooter className='flex justify-between p-4'>
         <EditBookDialog book={book} onBookUpdated={onBookUpdated} />
         <Button variant='destructive' size='sm' onClick={handleDeleteBook}>
           <Trash2 className='w-4 h-4 mr-2' />

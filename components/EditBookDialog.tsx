@@ -50,7 +50,7 @@ export default function EditBookDialog({
         id: book.id,
         title,
         authorName,
-        coverImage,
+        coverImage: coverImage || undefined,
       })
       onBookUpdated(updatedBook)
       setOpen(false)
@@ -100,7 +100,7 @@ export default function EditBookDialog({
             />
           </div>
           <div>
-            <Label htmlFor='edit-coverImage'>Cover Image URL</Label>
+            <Label htmlFor='edit-coverImage'>Cover Image URL (optional)</Label>
             <Input
               id='edit-coverImage'
               name='coverImage'

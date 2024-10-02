@@ -41,7 +41,11 @@ export default function AddBookDialog({ onBookAdded }: AddBookDialogProps) {
     }
 
     try {
-      const newBook = await createBook({ title, authorName, coverImage })
+      const newBook = await createBook({
+        title,
+        authorName,
+        coverImage: coverImage || undefined,
+      })
       onBookAdded(newBook)
       form.reset()
       setOpen(false)
@@ -78,7 +82,7 @@ export default function AddBookDialog({ onBookAdded }: AddBookDialogProps) {
             <Input id='author' name='author' required />
           </div>
           <div>
-            <Label htmlFor='coverImage'>Cover Image URL</Label>
+            <Label htmlFor='coverImage'>Cover Image URL (optional)</Label>
             <Input id='coverImage' name='coverImage' />
           </div>
           <Button type='submit'>Create Book</Button>
