@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
 import BookList from '@/components/BookList'
-import AddBookDialog from '@/components/AddBookDialog'
 import Header from '@/components/Header'
 import { getBooks } from '@/lib/actions'
 
@@ -15,7 +14,6 @@ export default async function Page() {
       <main>
         <div className='max-w-7xl mx-auto py-6 sm:px-6 lg:px-8'>
           <div className='px-4 py-6 sm:px-0'>
-            <AddBookDialog />
             <Suspense fallback={<div>Loading books...</div>}>
               <BookList initialBooks={initialBooks} />
             </Suspense>

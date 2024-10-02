@@ -18,12 +18,12 @@ import { Edit } from 'lucide-react'
 
 interface EditBookDialogProps {
   book: BookType
-  setBooks: React.Dispatch<React.SetStateAction<BookType[]>>
+  onBookUpdated: (book: BookType) => void
 }
 
 export default function EditBookDialog({
   book,
-  setBooks,
+  onBookUpdated,
 }: EditBookDialogProps) {
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
@@ -52,9 +52,7 @@ export default function EditBookDialog({
         authorName,
         coverImage,
       })
-      setBooks((prevBooks) =>
-        prevBooks.map((b) => (b.id === updatedBook.id ? updatedBook : b))
-      )
+      onBookUpdated(updatedBook)
       setOpen(false)
       toast({
         title: 'Success',
@@ -97,7 +95,7 @@ export default function EditBookDialog({
             <Input
               id='edit-author'
               name='author'
-              defaultValue={book.author?.name}
+              defaultValue={book.author?.name ?? ''}
               required
             />
           </div>

@@ -13,8 +13,13 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
 import { createBook } from '@/lib/actions'
+import { BookType } from '@/lib/types'
 
-export default function AddBookDialog() {
+interface AddBookDialogProps {
+  onBookAdded: (book: BookType) => void
+}
+
+export default function AddBookDialog({ onBookAdded }: AddBookDialogProps) {
   const [open, setOpen] = useState(false)
   const { toast } = useToast()
 
@@ -36,7 +41,8 @@ export default function AddBookDialog() {
     }
 
     try {
-      await createBook({ title, authorName, coverImage })
+      const newBook = await createBook({ title, authorName, coverImage })
+      onBookAdded(newBook)
       form.reset()
       setOpen(false)
       toast({

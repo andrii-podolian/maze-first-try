@@ -11,16 +11,21 @@ import { useToast } from '@/hooks/use-toast'
 
 interface BookCardProps {
   book: BookType
-  setBooks: React.Dispatch<React.SetStateAction<BookType[]>>
+  onBookUpdated: (book: BookType) => void
+  onBookRemoved: (id: number) => void
 }
 
-export default function BookCard({ book, setBooks }: BookCardProps) {
+export default function BookCard({
+  book,
+  onBookUpdated,
+  onBookRemoved,
+}: BookCardProps) {
   const { toast } = useToast()
 
   const handleDeleteBook = async () => {
     try {
       await deleteBook(book.id)
-      setBooks((prevBooks) => prevBooks.filter((b) => b.id !== book.id))
+      onBookRemoved(book.id)
       toast({
         title: 'Success',
         description: 'Book deleted successfully.',
@@ -49,7 +54,7 @@ export default function BookCard({ book, setBooks }: BookCardProps) {
         <p className='text-sm text-gray-500'>{book.author?.name}</p>
       </CardContent>
       <CardFooter className='flex justify-between'>
-        <EditBookDialog book={book} setBooks={setBooks} />
+        <EditBookDialog book={book} onBookUpdated={onBookUpdated} />
         <Button variant='destructive' size='sm' onClick={handleDeleteBook}>
           <Trash2 className='w-4 h-4 mr-2' />
           Delete
