@@ -81,7 +81,7 @@ export default function EditBookDialog({
           <DialogTitle>Edit Book</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleUpdateBook} className='space-y-4'>
-          <div>
+          <div className='space-y-2'>
             <Label htmlFor='edit-title'>Title</Label>
             <Input
               id='edit-title'
@@ -90,7 +90,7 @@ export default function EditBookDialog({
               required
             />
           </div>
-          <div>
+          <div className='space-y-2'>
             <Label htmlFor='edit-author'>Author</Label>
             <Input
               id='edit-author'
@@ -99,7 +99,7 @@ export default function EditBookDialog({
               required
             />
           </div>
-          <div>
+          <div className='space-y-2'>
             <Label htmlFor='edit-coverImage'>Cover Image URL (optional)</Label>
             <Input
               id='edit-coverImage'

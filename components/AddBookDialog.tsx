@@ -73,15 +73,15 @@ export default function AddBookDialog({ onBookAdded }: AddBookDialogProps) {
           <DialogTitle>Add New Book</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleCreateBook} className='space-y-4'>
-          <div>
+          <div className='space-y-2'>
             <Label htmlFor='title'>Title</Label>
             <Input id='title' name='title' required />
           </div>
-          <div>
+          <div className='space-y-2'>
             <Label htmlFor='author'>Author</Label>
             <Input id='author' name='author' required />
           </div>
-          <div>
+          <div className='space-y-2'>
             <Label htmlFor='coverImage'>Cover Image URL (optional)</Label>
             <Input id='coverImage' name='coverImage' />
           </div>
